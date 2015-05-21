@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <declare-styleable name="UIElement">
+
+        <attr name="android:id" />
+
+        <attr name="android:padding" />
+        <attr name="android:paddingLeft" />
+        <attr name="android:paddingTop" />
+        <attr name="android:paddingRight" />
+        <attr name="android:paddingBottom" />
+
+        <attr name="android:visibility" />
+
+    </declare-styleable>
+
+    <declare-styleable name="ImageElement">
+
+        <attr name="android:src" />
+        <attr name="android:scaleType" />
+
+    </declare-styleable>
+
+    <declare-styleable name="TextElement">
+
+        <attr name="android:textSize" />
+        <attr name="android:textColor" />
+        <attr name="android:ellipsize" />
+        <attr name="android:maxLines" />
+
+    </declare-styleable>
+
+</resources>

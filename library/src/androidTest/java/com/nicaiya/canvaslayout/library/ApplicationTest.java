@@ -1,4 +1,4 @@
-package com.nicaiya.canvaslayout;
+package com.nicaiya.canvaslayout.library;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
