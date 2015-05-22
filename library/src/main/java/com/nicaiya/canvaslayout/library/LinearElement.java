@@ -1,0 +1,367 @@
+package com.nicaiya.canvaslayout.library;
+
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+/**
+ * 线性布局
+ * <p/>
+ * 支持横向和纵向布局
+ * android:orientation="horizontal"
+ * <p/>
+ * 支持布局内容排布方向
+ * 例如横向布局，支持整体居左，居中，居右
+ * 例如纵向布局，支持整体居上，居中，居下
+ * android:gravity="left"
+ * <p/>
+ * 支持子布局在该线性布局中的排布方向
+ * 与安卓线性布局行为一致
+ * android:layout_gravity="top"
+ * <p/>
+ * Created by zhengjie on 15-5-20.
+ */
+public class LinearElement extends UIElementGroup {
+
+    private static final String TAG = LinearElement.class.getSimpleName();
+    private static final boolean DEG = false;
+
+    public static final int HORIZONTAL = 0;
+    public static final int VERTICAL = 1;
+
+    private int mOrientation = HORIZONTAL;
+
+    private int mGravity = Gravity.LEFT;
+
+    private int mTotalLength;
+
+    public LinearElement(UIElementHost host) {
+        super(host);
+    }
+
+    public LinearElement(UIElementHost host, AttributeSet attrs) {
+        super(host, attrs);
+    }
+
+    public LinearElement(UIElementHost host, UIAttributeSet attrs) {
+        super(host, attrs);
+
+        final int indexCount = attrs.getAttributeCount();
+        for (int i = 0; i < indexCount; i++) {
+            String name = attrs.getAttributeName(i);
+            String value = attrs.getAttributeValue(i);
+            if (name.equals("orientation")) {
+                if ("vertical".equals(value)) {
+                    setOrientation(VERTICAL);
+                } else {
+                    setOrientation(HORIZONTAL);
+                }
+            } else if (name.equals("gravity")) {
+                if ("left".equals(value)) {
+                    mGravity = Gravity.LEFT;
+                } else if ("top".equals(value)) {
+                    mGravity = Gravity.TOP;
+                } else if ("right".equals(value)) {
+                    mGravity = Gravity.RIGHT;
+                } else if ("bottom".equals(value)) {
+                    mGravity = Gravity.BOTTOM;
+                } else if ("center_horizontal".equals(value)) {
+                    mGravity = Gravity.CENTER_HORIZONTAL;
+                } else if ("center_vertical".equals(value)) {
+                    mGravity = Gravity.CENTER_VERTICAL;
+                } else {
+                    mGravity = Gravity.LEFT | Gravity.TOP;
+                }
+            }
+        }
+    }
+
+    public void setOrientation(int orientation) {
+        if (mOrientation != orientation) {
+            mOrientation = orientation;
+            requestLayout();
+        }
+    }
+
+    public int getOrientation() {
+        return mOrientation;
+    }
+
+    public void setGravity(int gravity) {
+        if (mGravity != gravity) {
+            mGravity = gravity;
+            requestLayout();
+        }
+    }
+
+    public int getGravity() {
+        return mGravity;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (mOrientation == VERTICAL) {
+            measureVertical(widthMeasureSpec, heightMeasureSpec);
+        } else {
+            measureHorizontal(widthMeasureSpec, heightMeasureSpec);
+        }
+    }
+
+    void measureHorizontal(int widthMeasureSpec, int heightMeasureSpec) {
+        mTotalLength = 0;
+        int maxHeight = 0;
+
+        int count = getElementCount();
+
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
+        for (int i = 0; i < count; i++) {
+            UIElement child = getElementAt(i);
+            if (child.getVisibility() != View.GONE) {
+                int childRight;
+                int childBottom;
+                childRight = child.getMeasuredWidth();
+                childBottom = child.getMeasuredHeight();
+
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+
+                mTotalLength += childRight + lp.leftMargin + lp.rightMargin;
+                maxHeight = Math.max(maxHeight, childBottom);
+            }
+
+            if (DEG) {
+                Log.d(TAG, "measureHorizontal totalLength " + mTotalLength);
+            }
+        }
+        mTotalLength += getPaddingLeft() + getPaddingRight();
+        maxHeight += getPaddingTop() + getPaddingBottom();
+
+        setMeasuredDimension(resolveSize(mTotalLength, widthMeasureSpec), resolveSize(maxHeight, heightMeasureSpec));
+    }
+
+    void measureVertical(int widthMeasureSpec, int heightMeasureSpec) {
+        mTotalLength = 0;
+        int maxWidth = 0;
+
+        int count = getElementCount();
+
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
+        for (int i = 0; i < count; i++) {
+            UIElement child = getElementAt(i);
+            if (child.getVisibility() != View.GONE) {
+                int childRight;
+                int childBottom;
+
+                childRight = child.getMeasuredWidth();
+                childBottom = child.getMeasuredHeight();
+
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+
+                mTotalLength += childBottom + lp.topMargin + lp.bottomMargin;
+                maxWidth = Math.max(maxWidth, childRight);
+            }
+
+            if (DEG) {
+                Log.d(TAG, "measureVertical totalLength " + mTotalLength);
+            }
+        }
+        mTotalLength += getPaddingLeft() + getPaddingRight();
+        maxWidth += getPaddingTop() + getPaddingBottom();
+        setMeasuredDimension(resolveSize(maxWidth, heightMeasureSpec), resolveSize(mTotalLength, widthMeasureSpec));
+    }
+
+    @Override
+    protected void onLayout(int left, int top, int right, int bottom) {
+        if (mOrientation == VERTICAL) {
+            layoutVertical();
+        } else {
+            layoutHorizontal();
+        }
+    }
+
+    void layoutVertical() {
+        int paddingTop = getPaddingTop();
+        int paddingLeft = getPaddingLeft();
+        int paddingRight = getPaddingRight();
+
+        int childTop;
+        int childLeft;
+
+        // Where right end of child should go
+        final int width = getWidth();
+        int childRight = width - paddingRight;
+
+        // Space available for child
+        int childSpace = width - paddingLeft - paddingRight;
+
+        final int majorGravity = mGravity & Gravity.VERTICAL_GRAVITY_MASK;
+        switch (majorGravity) {
+            case Gravity.BOTTOM:
+                // mTotalLength contains the padding already
+                childTop = paddingTop + getHeight() - mTotalLength;
+                break;
+
+            // mTotalLength contains the padding already
+            case Gravity.CENTER_VERTICAL:
+                childTop = paddingTop + (getHeight() - mTotalLength) / 2;
+                break;
+
+            case Gravity.TOP:
+            default:
+                childTop = paddingTop;
+                break;
+        }
+
+        int count = getElementCount();
+        for (int i = 0; i < count; i++) {
+            UIElement child = getElementAt(i);
+            if (child.getVisibility() != View.GONE) {
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+
+                final int childWidth = child.getMeasuredWidth();
+                final int childHeight = child.getMeasuredHeight();
+
+                int gravity = lp.gravity;
+
+                switch (gravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+                    case Gravity.CENTER_HORIZONTAL:
+                        childLeft = paddingLeft + ((childSpace - childWidth) / 2)
+                                + lp.leftMargin - lp.rightMargin;
+                        break;
+
+                    case Gravity.RIGHT:
+                        childLeft = childRight - childWidth - lp.rightMargin;
+                        break;
+
+                    case Gravity.LEFT:
+                    default:
+                        childLeft = paddingLeft + lp.leftMargin;
+                        break;
+                }
+
+                childTop += lp.topMargin;
+                child.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
+
+                if (DEG) {
+                    Log.d(TAG, "layoutVertical " + childLeft + "," + childTop + "," + (childLeft + childWidth) + "," + (childTop + childHeight));
+                }
+                childTop += childHeight + lp.bottomMargin;
+            }
+        }
+
+    }
+
+    void layoutHorizontal() {
+        int paddingTop = getPaddingTop();
+        int paddingLeft = getPaddingLeft();
+        int paddingBottom = getPaddingRight();
+
+        int childTop;
+        int childLeft;
+
+        // Where bottom of child should go
+        final int height = getHeight();
+        int childBottom = height - paddingBottom;
+
+        // Space available for child
+        int childSpace = height - paddingTop - paddingBottom;
+
+        final int majorGravity = mGravity & Gravity.HORIZONTAL_GRAVITY_MASK;
+        switch (majorGravity) {
+            case Gravity.RIGHT:
+                // mTotalLength contains the padding already
+                childLeft = paddingLeft + getWidth() - mTotalLength;
+                break;
+
+            case Gravity.CENTER_HORIZONTAL:
+                // mTotalLength contains the padding already
+                childLeft = paddingLeft + (getWidth() - mTotalLength) / 2;
+                break;
+
+            case Gravity.LEFT:
+            default:
+                childLeft = paddingLeft;
+                break;
+        }
+
+        int count = getElementCount();
+        for (int i = 0; i < count; i++) {
+            UIElement child = getElementAt(i);
+            if (child.getVisibility() != View.GONE) {
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+                final int childWidth = child.getMeasuredWidth();
+                final int childHeight = child.getMeasuredHeight();
+
+                int gravity = lp.gravity;
+
+                switch (gravity & Gravity.VERTICAL_GRAVITY_MASK) {
+                    case Gravity.TOP:
+                        childTop = paddingTop + lp.topMargin;
+                        break;
+                    case Gravity.CENTER_VERTICAL:
+                        childTop = paddingTop + ((childSpace - childHeight) / 2)
+                                + lp.topMargin - lp.bottomMargin;
+                        break;
+                    case Gravity.BOTTOM:
+                        childTop = childBottom - childHeight - lp.bottomMargin;
+                        break;
+                    default:
+                        childTop = paddingTop;
+                        break;
+                }
+
+                childLeft += lp.leftMargin;
+                child.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
+
+                if (DEG) {
+                    Log.d(TAG, "layoutHorizontal " + childLeft + "," + childTop + "," + (childLeft + childWidth) + "," + (childTop + childHeight));
+                }
+
+                childLeft += childWidth + lp.rightMargin;
+            }
+        }
+    }
+
+    @Override
+    public LinearLayout.LayoutParams generateLayoutParams(UIAttributeSet attrs) {
+        ViewGroup.MarginLayoutParams lParams = (ViewGroup.MarginLayoutParams)super.generateLayoutParams(attrs);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(lParams);
+
+        final int indexCount = attrs.getAttributeCount();
+        for (int i = 0; i < indexCount; i++) {
+            String name = attrs.getAttributeName(i);
+            String value = attrs.getAttributeValue(i);
+            if (name.equals("layout_gravity")) {
+                if ("left".equals(value)) {
+                    lp.gravity = Gravity.LEFT;
+                } else if ("top".equals(value)) {
+                    lp.gravity = Gravity.TOP;
+                } else if ("right".equals(value)) {
+                    lp.gravity = Gravity.RIGHT;
+                } else if ("bottom".equals(value)) {
+                    lp.gravity = Gravity.BOTTOM;
+                } else if ("center_horizontal".equals(value)) {
+                    lp.gravity = Gravity.CENTER_HORIZONTAL;
+                } else if ("center_vertical".equals(value)) {
+                    lp.gravity = Gravity.CENTER_VERTICAL;
+                } else {
+                    lp.gravity = Gravity.LEFT | Gravity.TOP;
+                }
+            }
+        }
+        return lp;
+    }
+
+    // Override to allow type-checking of LayoutParams.
+    @Override
+    protected boolean checkLayoutParams(ViewGroup.LayoutParams lp) {
+        return lp instanceof LinearLayout.LayoutParams;
+    }
+
+    @Override
+    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
+        return new LinearLayout.LayoutParams(lp);
+    }
+}

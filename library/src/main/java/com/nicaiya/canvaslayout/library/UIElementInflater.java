@@ -17,7 +17,8 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 
 public class UIElementInflater {
-    private static final String LOGTAG = "UIElementInflater";
+
+    private static final String TAG = UIElementInflater.class.getSimpleName();
     private static final boolean DEBUG = false;
 
     private final Context mContext;
@@ -25,9 +26,9 @@ public class UIElementInflater {
 
     private static UIElementInflater sInstance;
 
-    private static final Class<?>[] sConstructorSignature = new Class[] {
-        UIElementHost.class,
-        AttributeSet.class
+    private static final Class<?>[] sConstructorSignature = new Class[]{
+            UIElementHost.class,
+            AttributeSet.class
     };
 
     private static final HashMap<String, Constructor<? extends UIElement>> sConstructorMap =
@@ -62,7 +63,7 @@ public class UIElementInflater {
     public UIElement inflate(int resource, UIElementHost host, UIElementGroup root,
                              boolean attachToRoot) {
         if (DEBUG) {
-            Log.d(LOGTAG, "INFLATING from resource: " + resource);
+            Log.d(TAG, "INFLATING from resource: " + resource);
         }
 
         XmlResourceParser parser = getContext().getResources().getLayout(resource);
@@ -97,9 +98,9 @@ public class UIElementInflater {
                 final String name = parser.getName();
 
                 if (DEBUG) {
-                    Log.d(LOGTAG, "**************************");
-                    Log.d(LOGTAG, "Creating root view: " + name);
-                    Log.d(LOGTAG, "**************************");
+                    Log.d(TAG, "**************************");
+                    Log.d(TAG, "Creating root view: " + name);
+                    Log.d(TAG, "**************************");
                 }
 
                 if (TAG_MERGE.equals(name)) {
@@ -116,7 +117,7 @@ public class UIElementInflater {
 
                     if (root != null) {
                         if (DEBUG) {
-                            Log.d(LOGTAG, "Creating params from root: " + root);
+                            Log.d(TAG, "Creating params from root: " + root);
                         }
 
                         // Create layout params that match root, if supplied
@@ -129,13 +130,13 @@ public class UIElementInflater {
                     }
 
                     if (DEBUG) {
-                        Log.d(LOGTAG, "-----> start inflating children");
+                        Log.d(TAG, "-----> start inflating children");
                     }
 
                     // Inflate all children under temp
                     rInflate(parser, temp, attrs, true);
                     if (DEBUG) {
-                        Log.d(LOGTAG, "-----> done inflating children");
+                        Log.d(TAG, "-----> done inflating children");
                     }
 
                     // We are supposed to attach all the views we found (int temp)
@@ -230,7 +231,7 @@ public class UIElementInflater {
         }
 
         if (DEBUG) {
-            Log.d(LOGTAG, "******** Creating view: " + name);
+            Log.d(TAG, "******** Creating view: " + name);
         }
 
         try {
@@ -242,7 +243,7 @@ public class UIElementInflater {
             }
 
             if (DEBUG) {
-                Log.d(LOGTAG, "Created view is: " + element);
+                Log.d(TAG, "Created view is: " + element);
             }
 
             return element;

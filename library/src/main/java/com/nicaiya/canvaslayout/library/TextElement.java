@@ -21,7 +21,9 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
 public class TextElement extends AbstractUIElement {
-    private static final String LOGTAG = "TextElement";
+
+    private static final String TAG = TextElement.class.getSimpleName();
+    private static final boolean DEG = false;
 
     private CharSequence mText;
 
@@ -91,7 +93,7 @@ public class TextElement extends AbstractUIElement {
                         setEllipsize(TextUtils.TruncateAt.END);
                         break;
                     case 4:
-                        Log.w(LOGTAG, "Marquee ellipsize is not supported");
+                        Log.w(TAG, "Marquee ellipsize is not supported");
                         break;
                 }
             }

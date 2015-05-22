@@ -7,6 +7,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class UIElementView extends View implements UIElementHost {
+
+    private static final String TAG = UIElementView.class.getSimpleName();
+    private static final boolean DEG = false;
+
     private UIElement mUIElement;
 
     public UIElementView(Context context, AttributeSet attrs) {

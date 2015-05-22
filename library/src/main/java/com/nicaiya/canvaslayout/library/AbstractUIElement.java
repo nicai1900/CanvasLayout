@@ -7,10 +7,15 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
 public abstract class AbstractUIElement implements UIElement {
+
+    private static final String TAG = AbstractUIElement.class.getSimpleName();
+    private static final boolean DEG = false;
+
     protected UIElementHost mHost;
 
     private int mId;
@@ -25,8 +30,30 @@ public abstract class AbstractUIElement implements UIElement {
 
     private int mVisibility = View.VISIBLE;
 
+    public static int resolveSize(int size, int measureSpec) {
+        int result = size;
+        int specMode = View.MeasureSpec.getMode(measureSpec);
+        int specSize = View.MeasureSpec.getSize(measureSpec);
+        switch (specMode) {
+            case View.MeasureSpec.UNSPECIFIED:
+                result = size;
+                break;
+            case View.MeasureSpec.AT_MOST:
+                if (specSize < size) {
+                    result = specSize;
+                } else {
+                    result = size;
+                }
+                break;
+            case View.MeasureSpec.EXACTLY:
+                result = specSize;
+                break;
+        }
+        return result;
+    }
+
     public AbstractUIElement(UIElementHost host) {
-        this(host, null);
+        this(host, (AttributeSet) null);
     }
 
     public AbstractUIElement(UIElementHost host, AttributeSet attrs) {
@@ -57,6 +84,46 @@ public abstract class AbstractUIElement implements UIElement {
         }
 
         a.recycle();
+    }
+
+    public AbstractUIElement(UIElementHost host, UIAttributeSet attrs) {
+        if (DEG) {
+            Log.d(TAG, "AbstractUIElement attrs count:" + attrs.getAttributeCount());
+        }
+
+        swapHost(host);
+        final int indexCount = attrs.getAttributeCount();
+        for (int i = 0; i < indexCount; i++) {
+
+            String name = attrs.getAttributeName(i);
+            String value = attrs.getAttributeValue(i);
+            if (DEG) {
+                Log.d(TAG, name + ": " + value);
+            }
+
+            if (name.equals("padding")) {
+                int padding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
+                mPadding.left = mPadding.top = mPadding.right = mPadding.bottom = padding;
+            } else if (name.equals("paddingLeft")) {
+                mPadding.left = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
+            } else if (name.equals("paddingTop")) {
+                mPadding.top = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
+            } else if (name.equals("paddingRight")) {
+                mPadding.right = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
+            } else if (name.equals("paddingBottom")) {
+                mPadding.bottom = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
+            } else if (name.equals("id")) {
+                mId = Integer.valueOf(value);
+            } else if (name.equals("visibility")) {
+                if (value.equals("visible")) {
+                    mVisibility = View.VISIBLE;
+                } else if (value.equals("invisible")) {
+                    mVisibility = View.INVISIBLE;
+                } else if (value.equals("gone")) {
+                    mVisibility = View.GONE;
+                }
+            }
+        }
     }
 
     protected void onAttachedToHost() {

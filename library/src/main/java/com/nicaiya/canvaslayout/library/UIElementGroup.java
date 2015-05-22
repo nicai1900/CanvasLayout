@@ -2,6 +2,7 @@
 package com.nicaiya.canvaslayout.library;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -12,13 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class UIElementGroup extends AbstractUIElement {
+
+    private static final String TAG = UIElementGroup.class.getSimpleName();
+    private static final boolean DEG = false;
+
     private final List<UIElement> mElements;
 
     public UIElementGroup(UIElementHost host) {
-        this(host, null);
+        this(host, (AttributeSet) null);
     }
 
     public UIElementGroup(UIElementHost host, AttributeSet attrs) {
+        super(host, attrs);
+        mElements = new ArrayList<UIElement>();
+    }
+
+    public UIElementGroup(UIElementHost host, UIAttributeSet attrs) {
         super(host, attrs);
         mElements = new ArrayList<UIElement>();
     }
@@ -105,6 +115,10 @@ public abstract class UIElementGroup extends AbstractUIElement {
         requestLayout();
     }
 
+    public void removeAllElement() {
+        mElements.clear();
+    }
+
     public UIElement findElementById(int id) {
         for (UIElement element : mElements) {
             if (element.getId() == id) {
@@ -115,8 +129,37 @@ public abstract class UIElementGroup extends AbstractUIElement {
         return null;
     }
 
+    public int getElementCount() {
+        return mElements.size();
+    }
+
+    public UIElement getElementAt(int index) {
+        return mElements.get(index);
+    }
+
+    protected void measureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+        final int size = mElements.size();
+        for (int i = 0; i < size; ++i) {
+            final UIElement element = mElements.get(i);
+            if (element.getVisibility() != View.GONE) {
+                measureChild(element, widthMeasureSpec, heightMeasureSpec);
+            }
+        }
+    }
+
+    protected void measureChild(UIElement child, int parentWidthMeasureSpec,
+                                int parentHeightMeasureSpec) {
+        final LayoutParams lp = child.getLayoutParams();
+
+        final int childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,
+                getPaddingLeft() + getPaddingRight(), lp.width);
+        final int childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,
+                getPaddingTop() + getPaddingBottom(), lp.height);
+        child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+    }
+
     protected boolean checkLayoutParams(LayoutParams lp) {
-        return  (lp != null && lp instanceof MarginLayoutParams);
+        return (lp != null && lp instanceof MarginLayoutParams);
     }
 
     protected LayoutParams generateLayoutParams(LayoutParams lp) {
@@ -125,6 +168,56 @@ public abstract class UIElementGroup extends AbstractUIElement {
         }
 
         return new MarginLayoutParams(lp.width, lp.height);
+    }
+
+    public LayoutParams generateLayoutParams(UIAttributeSet attrs) {
+        Rect margin = new Rect();
+        int width = -3;
+        int height = -3;
+
+        final int indexCount = attrs.getAttributeCount();
+        for (int i = 0; i < indexCount; i++) {
+            String name = attrs.getAttributeName(i);
+            String value = attrs.getAttributeValue(i);
+
+            if (name.equals("layout_width")) {
+                if (value.equals("fill_parent") || value.equals("match_parent")) {
+                    width = LayoutParams.MATCH_PARENT;
+                } else if (value.equals("wrap_content")) {
+                    width = LayoutParams.WRAP_CONTENT;
+                } else {
+                    width = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
+                }
+            } else if (name.equals("layout_height")) {
+                if (value.equals("fill_parent") || value.equals("match_parent")) {
+                    height = LayoutParams.MATCH_PARENT;
+                } else if (value.equals("wrap_content")) {
+                    height = LayoutParams.WRAP_CONTENT;
+                } else {
+                    height = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
+                }
+            } else if (name.equals("layout_margin")) {
+                int padding = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
+                margin.left = margin.top = margin.right = margin.bottom = padding;
+            } else if (name.equals("layout_marginLeft")) {
+                margin.left = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
+            } else if (name.equals("layout_marginTop")) {
+                margin.top = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
+            } else if (name.equals("layout_marginRight")) {
+                margin.right = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
+            } else if (name.equals("layout_marginBottom")) {
+                margin.bottom = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
+            }
+        }
+
+        if (width == -3 || height == -3) {
+            throw new RuntimeException("UIElement: You must supply layout_width and layout_height attribute.");
+        }
+
+
+        MarginLayoutParams mp = new MarginLayoutParams(width, height);
+        mp.setMargins(margin.left, margin.top, margin.right, margin.bottom);
+        return mp;
     }
 
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
@@ -151,6 +244,53 @@ public abstract class UIElementGroup extends AbstractUIElement {
         );
 
         element.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+    }
+
+    public static int getChildMeasureSpec(int spec, int padding, int childDimension) {
+        int specMode = MeasureSpec.getMode(spec);
+        int specSize = MeasureSpec.getSize(spec);
+        int size = Math.max(0, specSize - padding);
+        int resultSize = 0;
+        int resultMode = 0;
+        switch (specMode) {
+            case MeasureSpec.EXACTLY:
+                if (childDimension >= 0) {
+                    resultSize = childDimension;
+                    resultMode = MeasureSpec.EXACTLY;
+                } else if (childDimension == LayoutParams.MATCH_PARENT) {
+                    resultSize = size;
+                    resultMode = MeasureSpec.EXACTLY;
+                } else if (childDimension == LayoutParams.WRAP_CONTENT) {
+                    resultSize = size;
+                    resultMode = MeasureSpec.AT_MOST;
+                }
+                break;
+            case MeasureSpec.AT_MOST:
+                if (childDimension >= 0) {
+                    resultSize = childDimension;
+                    resultMode = MeasureSpec.EXACTLY;
+                } else if (childDimension == LayoutParams.MATCH_PARENT) {
+                    resultSize = size;
+                    resultMode = MeasureSpec.AT_MOST;
+                } else if (childDimension == LayoutParams.WRAP_CONTENT) {
+                    resultSize = size;
+                    resultMode = MeasureSpec.AT_MOST;
+                }
+                break;
+            case MeasureSpec.UNSPECIFIED:
+                if (childDimension >= 0) {
+                    resultSize = childDimension;
+                    resultMode = MeasureSpec.EXACTLY;
+                } else if (childDimension == LayoutParams.MATCH_PARENT) {
+                    resultSize = 0;
+                    resultMode = MeasureSpec.UNSPECIFIED;
+                } else if (childDimension == LayoutParams.WRAP_CONTENT) {
+                    resultSize = 0;
+                    resultMode = MeasureSpec.UNSPECIFIED;
+                }
+                break;
+        }
+        return MeasureSpec.makeMeasureSpec(resultSize, resultMode);
     }
 
     protected static int getElementMeasureSpec(int spec, int padding, int childDimension) {

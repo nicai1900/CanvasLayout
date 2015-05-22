@@ -14,7 +14,9 @@ import android.util.Log;
 import java.lang.reflect.Constructor;
 
 public class StaticLayoutWithMaxLines {
-    private static final String LOGTAG = StaticLayoutWithMaxLines.class.getSimpleName();
+
+    private static final String TAG = StaticLayoutWithMaxLines.class.getSimpleName();
+    private static final boolean DEG = false;
 
     private static final String TEXT_DIR_CLASS = "android.text.TextDirectionHeuristic";
     private static final String TEXT_DIRS_CLASS = "android.text.TextDirectionHeuristics";
@@ -67,13 +69,13 @@ public class StaticLayoutWithMaxLines {
             sConstructor.setAccessible(true);
             sConstructorArgs = new Object[signature.length];
         } catch (NoSuchMethodException e) {
-            Log.e(LOGTAG, "StaticLayout constructor with max lines not found.", e);
+            Log.e(TAG, "StaticLayout constructor with max lines not found.", e);
         } catch (ClassNotFoundException e) {
-            Log.e(LOGTAG, "TextDirectionHeuristic class not found.", e);
+            Log.e(TAG, "TextDirectionHeuristic class not found.", e);
         } catch (NoSuchFieldException e) {
-            Log.e(LOGTAG, "TextDirectionHeuristics.FIRSTSTRONG_LTR not found.", e);
+            Log.e(TAG, "TextDirectionHeuristics.FIRSTSTRONG_LTR not found.", e);
         } catch (IllegalAccessException e) {
-            Log.e(LOGTAG, "TextDirectionHeuristics.FIRSTSTRONG_LTR not accessible.", e);
+            Log.e(TAG, "TextDirectionHeuristics.FIRSTSTRONG_LTR not accessible.", e);
         } finally {
             sInitialized = true;
         }

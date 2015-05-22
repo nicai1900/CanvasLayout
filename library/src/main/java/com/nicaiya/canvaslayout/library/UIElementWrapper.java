@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.view.ViewGroup;
 
 public class UIElementWrapper implements UIElement {
+
     private final UIElement mWrappedElement;
 
     public UIElementWrapper(UIElement element) {

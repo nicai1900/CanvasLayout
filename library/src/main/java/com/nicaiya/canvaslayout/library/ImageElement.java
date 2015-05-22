@@ -16,7 +16,9 @@ import android.view.View.MeasureSpec;
 import android.widget.ImageView.ScaleType;
 
 public class ImageElement extends AbstractUIElement implements Drawable.Callback {
-    private static final String LOGTAG = "ImageElement";
+
+    private static final String TAG = ImageElement.class.getSimpleName();
+    private static final boolean DEG = false;
 
     private static final ScaleType[] sScaleTypeArray = {
             ScaleType.MATRIX,
@@ -234,7 +236,7 @@ public class ImageElement extends AbstractUIElement implements Drawable.Callback
 
                 d = res.getDrawable(mResourceId);
             } catch (Exception e) {
-                Log.w(LOGTAG, "Unable to find resource: " + mResourceId, e);
+                Log.w(TAG, "Unable to find resource: " + mResourceId, e);
             }
         } else {
             return;
