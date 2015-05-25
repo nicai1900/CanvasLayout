@@ -5,13 +5,24 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.nicaiya.canvaslayout.library.UIElement;
+import com.nicaiya.canvaslayout.library.UIElementInflater;
+import com.nicaiya.canvaslayout.library.UIElementView;
 
 public class MainActivity extends ActionBarActivity {
+
+    private UIElementView mUIElementView;
+    private UIElementInflater mUIElementInflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mUIElementView = (UIElementView) findViewById(R.id.element_view);
+        mUIElementInflater = UIElementInflater.from(this);
+        UIElement content = mUIElementInflater.inflate(R.layout.element_content, mUIElementView, null);
+        mUIElementView.setUIElement(content);
     }
 
     @Override
