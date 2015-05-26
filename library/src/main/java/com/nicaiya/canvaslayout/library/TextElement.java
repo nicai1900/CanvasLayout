@@ -25,7 +25,7 @@ public class TextElement extends AbstractUIElement {
     private static final String TAG = TextElement.class.getSimpleName();
     private static final boolean DEG = false;
 
-    private CharSequence mText;
+    private CharSequence mText = "";
 
     private ColorStateList mTextColor;
     private int mCurTextColor;
@@ -65,7 +65,12 @@ public class TextElement extends AbstractUIElement {
         for (int i = 0; i < indexCount; i++) {
             final int attr = a.getIndex(i);
 
-            if (attr == R.styleable.TextElement_android_textSize) {
+            if (attr == R.styleable.TextElement_android_text) {
+                CharSequence text = a.getString(attr);
+                if (!TextUtils.isEmpty(text)) {
+                    setText(text);
+                }
+            } else if (attr == R.styleable.TextElement_android_textSize) {
                 final int textSize = a.getDimensionPixelSize(attr, -1);
                 if (textSize >= 0) {
                     setRawTextSize(textSize);

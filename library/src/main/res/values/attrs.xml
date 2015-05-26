@@ -5,13 +5,11 @@
     <declare-styleable name="UIElement">
 
         <attr name="android:id" />
-
         <attr name="android:padding" />
         <attr name="android:paddingLeft" />
         <attr name="android:paddingTop" />
         <attr name="android:paddingRight" />
         <attr name="android:paddingBottom" />
-
         <attr name="android:visibility" />
 
     </declare-styleable>
@@ -25,10 +23,17 @@
 
     <declare-styleable name="TextElement">
 
+        <attr name="android:text" />
         <attr name="android:textSize" />
         <attr name="android:textColor" />
         <attr name="android:ellipsize" />
         <attr name="android:maxLines" />
+
+    </declare-styleable>
+
+    <declare-styleable name="LinearElement">
+
+        <attr name="android:orientation" />
 
     </declare-styleable>
 

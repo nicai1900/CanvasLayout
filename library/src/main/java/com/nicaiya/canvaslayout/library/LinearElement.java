@@ -1,5 +1,6 @@
 package com.nicaiya.canvaslayout.library;
 
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -44,6 +45,20 @@ public class LinearElement extends UIElementGroup {
 
     public LinearElement(UIElementHost host, AttributeSet attrs) {
         super(host, attrs);
+
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LinearElement, 0, 0);
+
+        final int indexCount = a.getIndexCount();
+        for (int i = 0; i < indexCount; i++) {
+            final int attr = a.getIndex(i);
+
+            if (attr == R.styleable.LinearElement_android_orientation) {
+                final int orientation = a.getInt(attr, HORIZONTAL);
+                setOrientation(orientation);
+            }
+        }
+
+        a.recycle();
     }
 
     public LinearElement(UIElementHost host, UIAttributeSet attrs) {
@@ -326,7 +341,7 @@ public class LinearElement extends UIElementGroup {
 
     @Override
     public LinearLayout.LayoutParams generateLayoutParams(UIAttributeSet attrs) {
-        ViewGroup.MarginLayoutParams lParams = (ViewGroup.MarginLayoutParams)super.generateLayoutParams(attrs);
+        ViewGroup.MarginLayoutParams lParams = (ViewGroup.MarginLayoutParams) super.generateLayoutParams(attrs);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(lParams);
 
         final int indexCount = attrs.getAttributeCount();
