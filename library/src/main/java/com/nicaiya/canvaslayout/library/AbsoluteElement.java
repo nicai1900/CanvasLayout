@@ -74,4 +74,9 @@ public class AbsoluteElement extends UIElementGroup {
     protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
         return new AbsoluteLayout.LayoutParams(lp);
     }
+
+    @Override
+    public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new AbsoluteLayout.LayoutParams(getContext(), attrs);
+    }
 }

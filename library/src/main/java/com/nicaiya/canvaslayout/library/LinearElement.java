@@ -35,7 +35,7 @@ public class LinearElement extends UIElementGroup {
 
     private int mOrientation = HORIZONTAL;
 
-    private int mGravity = Gravity.LEFT;
+    private int mGravity = Gravity.TOP;
 
     private int mTotalLength;
 
@@ -48,17 +48,15 @@ public class LinearElement extends UIElementGroup {
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LinearElement, 0, 0);
 
-        final int indexCount = a.getIndexCount();
-        for (int i = 0; i < indexCount; i++) {
-            final int attr = a.getIndex(i);
 
-            if (attr == R.styleable.LinearElement_android_orientation) {
-                final int orientation = a.getInt(attr, HORIZONTAL);
-                setOrientation(orientation);
-            } else if (attr == R.styleable.LinearElement_android_gravity) {
-                final int gravity = a.getInt(attr, Gravity.LEFT | Gravity.TOP);
-                setGravity(gravity);
-            }
+        int index = a.getInt(com.android.internal.R.styleable.LinearLayout_orientation, -1);
+        if (index >= 0) {
+            setOrientation(index);
+        }
+
+        index = a.getInt(com.android.internal.R.styleable.LinearLayout_gravity, -1);
+        if (index >= 0) {
+            setGravity(index);
         }
 
         a.recycle();
@@ -182,6 +180,7 @@ public class LinearElement extends UIElementGroup {
         int childSpace = width - paddingLeft - paddingRight;
 
         final int majorGravity = mGravity & Gravity.VERTICAL_GRAVITY_MASK;
+
         switch (majorGravity) {
             case Gravity.BOTTOM:
                 // mTotalLength contains the padding already
@@ -319,4 +318,10 @@ public class LinearElement extends UIElementGroup {
     protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
         return new LinearLayout.LayoutParams(lp);
     }
+
+    @Override
+    public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new LinearLayout.LayoutParams(getContext(), attrs);
+    }
+
 }
