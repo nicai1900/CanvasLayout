@@ -1,4 +1,4 @@
-package com.nicaiya.canvaslayout.library;
+package com.nicaiya.canvaslayout.library.utils;
 
 import android.util.DisplayMetrics;
 import android.util.TypedValue;

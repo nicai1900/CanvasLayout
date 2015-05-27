@@ -5,9 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsoluteLayout;
 
-/**
- * 绝对布局
- */
+import com.nicaiya.canvaslayout.library.utils.DimensionConverter;
+
 public class AbsoluteElement extends UIElementGroup {
 
     private static final String TAG = AbsoluteElement.class.getSimpleName();
@@ -90,7 +89,6 @@ public class AbsoluteElement extends UIElementGroup {
         return lp;
     }
 
-    // Override to allow type-checking of LayoutParams.
     @Override
     protected boolean checkLayoutParams(ViewGroup.LayoutParams lp) {
         return lp instanceof AbsoluteLayout.LayoutParams;

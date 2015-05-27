@@ -7,9 +7,10 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+
+import com.nicaiya.canvaslayout.library.utils.DimensionConverter;
 
 public abstract class AbstractUIElement implements UIElement {
 
@@ -61,21 +62,26 @@ public abstract class AbstractUIElement implements UIElement {
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UIElement, 0, 0);
 
+        int leftPadding = -1;
+        int topPadding = -1;
+        int rightPadding = -1;
+        int bottomPadding = -1;
+        int padding = -1;
+
         final int indexCount = a.getIndexCount();
         for (int i = 0; i < indexCount; i++) {
             final int attr = a.getIndex(i);
 
             if (attr == R.styleable.UIElement_android_padding) {
-                final int padding = a.getDimensionPixelSize(attr, 0);
-                mPadding.left = mPadding.top = mPadding.right = mPadding.bottom = padding;
+                padding = a.getDimensionPixelSize(attr, -1);
             } else if (attr == R.styleable.UIElement_android_paddingLeft) {
-                mPadding.left = a.getDimensionPixelSize(attr, 0);
+                leftPadding = a.getDimensionPixelSize(attr, -1);
             } else if (attr == R.styleable.UIElement_android_paddingTop) {
-                mPadding.top = a.getDimensionPixelSize(attr, 0);
+                topPadding = a.getDimensionPixelSize(attr, -1);
             } else if (attr == R.styleable.UIElement_android_paddingRight) {
-                mPadding.right = a.getDimensionPixelSize(attr, 0);
+                rightPadding = a.getDimensionPixelSize(attr, -1);
             } else if (attr == R.styleable.UIElement_android_paddingBottom) {
-                mPadding.bottom = a.getDimensionPixelSize(attr, 0);
+                bottomPadding = a.getDimensionPixelSize(attr, -1);
             } else if (attr == R.styleable.UIElement_android_id) {
                 mId = a.getResourceId(attr, -1);
             } else if (attr == R.styleable.UIElement_android_visibility) {
@@ -83,35 +89,44 @@ public abstract class AbstractUIElement implements UIElement {
             }
         }
 
+        if (padding >= 0) {
+            leftPadding = padding;
+            topPadding = padding;
+            rightPadding = padding;
+            bottomPadding = padding;
+        }
+
+        internalSetPadding(leftPadding > 0 ? leftPadding : 0, topPadding > 0 ? topPadding : 0,
+                rightPadding > 0 ? rightPadding : 0, bottomPadding > 0 ? bottomPadding : 0);
+
         a.recycle();
     }
 
     public AbstractUIElement(UIElementHost host, UIAttributeSet attrs) {
-        if (DEG) {
-            Log.d(TAG, "AbstractUIElement attrs count:" + attrs.getAttributeCount());
-        }
-
         swapHost(host);
-        final int indexCount = attrs.getAttributeCount();
-        for (int i = 0; i < indexCount; i++) {
 
+        final int indexCount = attrs.getAttributeCount();
+
+        int leftPadding = -1;
+        int topPadding = -1;
+        int rightPadding = -1;
+        int bottomPadding = -1;
+        int padding = -1;
+
+        for (int i = 0; i < indexCount; i++) {
             String name = attrs.getAttributeName(i);
             String value = attrs.getAttributeValue(i);
-            if (DEG) {
-                Log.d(TAG, name + ": " + value);
-            }
 
             if (name.equals("padding")) {
-                int padding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
-                mPadding.left = mPadding.top = mPadding.right = mPadding.bottom = padding;
+                padding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
             } else if (name.equals("paddingLeft")) {
-                mPadding.left = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
+                leftPadding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
             } else if (name.equals("paddingTop")) {
-                mPadding.top = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
+                topPadding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
             } else if (name.equals("paddingRight")) {
-                mPadding.right = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
+                rightPadding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
             } else if (name.equals("paddingBottom")) {
-                mPadding.bottom = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
+                bottomPadding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
             } else if (name.equals("id")) {
                 mId = Integer.valueOf(value);
             } else if (name.equals("visibility")) {
@@ -124,6 +139,16 @@ public abstract class AbstractUIElement implements UIElement {
                 }
             }
         }
+
+        if (padding >= 0) {
+            leftPadding = padding;
+            topPadding = padding;
+            rightPadding = padding;
+            bottomPadding = padding;
+        }
+
+        internalSetPadding(leftPadding > 0 ? leftPadding : 0, topPadding > 0 ? topPadding : 0,
+                rightPadding > 0 ? rightPadding : 0, bottomPadding > 0 ? bottomPadding : 0);
     }
 
     protected void onAttachedToHost() {
@@ -198,12 +223,16 @@ public abstract class AbstractUIElement implements UIElement {
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
+        internalSetPadding(left, top, right, bottom);
+
+        requestLayout();
+    }
+
+    private void internalSetPadding(int left, int top, int right, int bottom) {
         mPadding.left = left;
         mPadding.top = top;
         mPadding.right = right;
         mPadding.bottom = bottom;
-
-        requestLayout();
     }
 
     @Override

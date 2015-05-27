@@ -9,6 +9,8 @@ import android.view.View.MeasureSpec;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 
+import com.nicaiya.canvaslayout.library.utils.DimensionConverter;
+
 import java.util.ArrayList;
 import java.util.List;
 
