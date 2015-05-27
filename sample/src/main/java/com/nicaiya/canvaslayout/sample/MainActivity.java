@@ -16,7 +16,7 @@ public class MainActivity extends ActionBarActivity {
     private UIElementView mUIElementView;
     private UIElementInflater mUIElementInflater;
 
-    private TextElement mTestText;
+    private TextElement mAbsoluteText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class MainActivity extends ActionBarActivity {
         LinearElement content = (LinearElement) mUIElementInflater.inflate(R.layout.element_content, mUIElementView, null);
         mUIElementView.setUIElement(content);
 
-        mTestText = (TextElement) content.findElementById(R.id.test_text);
+        mAbsoluteText = (TextElement) content.findElementById(R.id.absolute_text);
     }
 
     @Override
@@ -47,7 +47,6 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            mTestText.setText("aaaa");
             return true;
         }
 

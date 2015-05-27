@@ -48,13 +48,12 @@ public class LinearElement extends UIElementGroup {
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.LinearElement, 0, 0);
 
-
-        int index = a.getInt(com.android.internal.R.styleable.LinearLayout_orientation, -1);
+        int index = a.getInt(R.styleable.LinearElement_android_orientation, -1);
         if (index >= 0) {
             setOrientation(index);
         }
 
-        index = a.getInt(com.android.internal.R.styleable.LinearLayout_gravity, -1);
+        index = a.getInt(R.styleable.LinearElement_android_gravity, -1);
         if (index >= 0) {
             setGravity(index);
         }
