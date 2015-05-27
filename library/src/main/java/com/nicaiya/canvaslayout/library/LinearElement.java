@@ -55,43 +55,13 @@ public class LinearElement extends UIElementGroup {
             if (attr == R.styleable.LinearElement_android_orientation) {
                 final int orientation = a.getInt(attr, HORIZONTAL);
                 setOrientation(orientation);
+            } else if (attr == R.styleable.LinearElement_android_gravity) {
+                final int gravity = a.getInt(attr, Gravity.LEFT | Gravity.TOP);
+                setGravity(gravity);
             }
         }
 
         a.recycle();
-    }
-
-    public LinearElement(UIElementHost host, UIAttributeSet attrs) {
-        super(host, attrs);
-
-        final int indexCount = attrs.getAttributeCount();
-        for (int i = 0; i < indexCount; i++) {
-            String name = attrs.getAttributeName(i);
-            String value = attrs.getAttributeValue(i);
-            if (name.equals("orientation")) {
-                if ("vertical".equals(value)) {
-                    setOrientation(VERTICAL);
-                } else {
-                    setOrientation(HORIZONTAL);
-                }
-            } else if (name.equals("gravity")) {
-                if ("left".equals(value)) {
-                    mGravity = Gravity.LEFT;
-                } else if ("top".equals(value)) {
-                    mGravity = Gravity.TOP;
-                } else if ("right".equals(value)) {
-                    mGravity = Gravity.RIGHT;
-                } else if ("bottom".equals(value)) {
-                    mGravity = Gravity.BOTTOM;
-                } else if ("center_horizontal".equals(value)) {
-                    mGravity = Gravity.CENTER_HORIZONTAL;
-                } else if ("center_vertical".equals(value)) {
-                    mGravity = Gravity.CENTER_VERTICAL;
-                } else {
-                    mGravity = Gravity.LEFT | Gravity.TOP;
-                }
-            }
-        }
     }
 
     public void setOrientation(int orientation) {
@@ -337,36 +307,6 @@ public class LinearElement extends UIElementGroup {
                 childLeft += childWidth + lp.rightMargin;
             }
         }
-    }
-
-    @Override
-    public LinearLayout.LayoutParams generateLayoutParams(UIAttributeSet attrs) {
-        ViewGroup.MarginLayoutParams lParams = (ViewGroup.MarginLayoutParams) super.generateLayoutParams(attrs);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(lParams);
-
-        final int indexCount = attrs.getAttributeCount();
-        for (int i = 0; i < indexCount; i++) {
-            String name = attrs.getAttributeName(i);
-            String value = attrs.getAttributeValue(i);
-            if (name.equals("layout_gravity")) {
-                if ("left".equals(value)) {
-                    lp.gravity = Gravity.LEFT;
-                } else if ("top".equals(value)) {
-                    lp.gravity = Gravity.TOP;
-                } else if ("right".equals(value)) {
-                    lp.gravity = Gravity.RIGHT;
-                } else if ("bottom".equals(value)) {
-                    lp.gravity = Gravity.BOTTOM;
-                } else if ("center_horizontal".equals(value)) {
-                    lp.gravity = Gravity.CENTER_HORIZONTAL;
-                } else if ("center_vertical".equals(value)) {
-                    lp.gravity = Gravity.CENTER_VERTICAL;
-                } else {
-                    lp.gravity = Gravity.LEFT | Gravity.TOP;
-                }
-            }
-        }
-        return lp;
     }
 
     // Override to allow type-checking of LayoutParams.

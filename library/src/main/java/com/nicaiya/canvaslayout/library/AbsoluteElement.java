@@ -5,8 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsoluteLayout;
 
-import com.nicaiya.canvaslayout.library.utils.DimensionConverter;
-
 public class AbsoluteElement extends UIElementGroup {
 
     private static final String TAG = AbsoluteElement.class.getSimpleName();
@@ -17,10 +15,6 @@ public class AbsoluteElement extends UIElementGroup {
     }
 
     public AbsoluteElement(UIElementHost host, AttributeSet attrs) {
-        super(host, attrs);
-    }
-
-    public AbsoluteElement(UIElementHost host, UIAttributeSet attrs) {
         super(host, attrs);
     }
 
@@ -69,24 +63,6 @@ public class AbsoluteElement extends UIElementGroup {
                         childTop + child.getMeasuredHeight());
             }
         }
-    }
-
-    @Override
-    public AbsoluteLayout.LayoutParams generateLayoutParams(UIAttributeSet attrs) {
-        ViewGroup.LayoutParams lParams = super.generateLayoutParams(attrs);
-        AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(lParams);
-
-        final int indexCount = attrs.getAttributeCount();
-        for (int i = 0; i < indexCount; i++) {
-            String name = attrs.getAttributeName(i);
-            String value = attrs.getAttributeValue(i);
-            if (name.equals("layout_x")) {
-                lp.x = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
-            } else if (name.equals("layout_y")) {
-                lp.y = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
-            }
-        }
-        return lp;
     }
 
     @Override

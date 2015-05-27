@@ -34,6 +34,7 @@
     <declare-styleable name="LinearElement">
 
         <attr name="android:orientation" />
+        <attr name="android:gravity" />
 
     </declare-styleable>
 

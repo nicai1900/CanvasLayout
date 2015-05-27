@@ -30,11 +30,6 @@ public abstract class UIElementGroup extends AbstractUIElement {
         mElements = new ArrayList<UIElement>();
     }
 
-    public UIElementGroup(UIElementHost host, UIAttributeSet attrs) {
-        super(host, attrs);
-        mElements = new ArrayList<UIElement>();
-    }
-
     @Override
     public boolean swapHost(UIElementHost host) {
         boolean changed = super.swapHost(host);
@@ -170,56 +165,6 @@ public abstract class UIElementGroup extends AbstractUIElement {
         }
 
         return new MarginLayoutParams(lp.width, lp.height);
-    }
-
-    public LayoutParams generateLayoutParams(UIAttributeSet attrs) {
-        Rect margin = new Rect();
-        int width = -3;
-        int height = -3;
-
-        final int indexCount = attrs.getAttributeCount();
-        for (int i = 0; i < indexCount; i++) {
-            String name = attrs.getAttributeName(i);
-            String value = attrs.getAttributeValue(i);
-
-            if (name.equals("layout_width")) {
-                if (value.equals("fill_parent") || value.equals("match_parent")) {
-                    width = LayoutParams.MATCH_PARENT;
-                } else if (value.equals("wrap_content")) {
-                    width = LayoutParams.WRAP_CONTENT;
-                } else {
-                    width = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
-                }
-            } else if (name.equals("layout_height")) {
-                if (value.equals("fill_parent") || value.equals("match_parent")) {
-                    height = LayoutParams.MATCH_PARENT;
-                } else if (value.equals("wrap_content")) {
-                    height = LayoutParams.WRAP_CONTENT;
-                } else {
-                    height = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
-                }
-            } else if (name.equals("layout_margin")) {
-                int padding = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
-                margin.left = margin.top = margin.right = margin.bottom = padding;
-            } else if (name.equals("layout_marginLeft")) {
-                margin.left = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
-            } else if (name.equals("layout_marginTop")) {
-                margin.top = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
-            } else if (name.equals("layout_marginRight")) {
-                margin.right = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
-            } else if (name.equals("layout_marginBottom")) {
-                margin.bottom = (int) DimensionConverter.stringToDimension(value, getResources().getDisplayMetrics());
-            }
-        }
-
-        if (width == -3 || height == -3) {
-            throw new RuntimeException("UIElement: You must supply layout_width and layout_height attribute.");
-        }
-
-
-        MarginLayoutParams mp = new MarginLayoutParams(width, height);
-        mp.setMargins(margin.left, margin.top, margin.right, margin.bottom);
-        return mp;
     }
 
     public LayoutParams generateLayoutParams(AttributeSet attrs) {

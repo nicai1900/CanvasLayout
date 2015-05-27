@@ -102,55 +102,6 @@ public abstract class AbstractUIElement implements UIElement {
         a.recycle();
     }
 
-    public AbstractUIElement(UIElementHost host, UIAttributeSet attrs) {
-        swapHost(host);
-
-        final int indexCount = attrs.getAttributeCount();
-
-        int leftPadding = -1;
-        int topPadding = -1;
-        int rightPadding = -1;
-        int bottomPadding = -1;
-        int padding = -1;
-
-        for (int i = 0; i < indexCount; i++) {
-            String name = attrs.getAttributeName(i);
-            String value = attrs.getAttributeValue(i);
-
-            if (name.equals("padding")) {
-                padding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
-            } else if (name.equals("paddingLeft")) {
-                leftPadding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
-            } else if (name.equals("paddingTop")) {
-                topPadding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
-            } else if (name.equals("paddingRight")) {
-                rightPadding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
-            } else if (name.equals("paddingBottom")) {
-                bottomPadding = DimensionConverter.stringToDimensionPixelSize(value, getResources().getDisplayMetrics());
-            } else if (name.equals("id")) {
-                mId = Integer.valueOf(value);
-            } else if (name.equals("visibility")) {
-                if (value.equals("visible")) {
-                    mVisibility = View.VISIBLE;
-                } else if (value.equals("invisible")) {
-                    mVisibility = View.INVISIBLE;
-                } else if (value.equals("gone")) {
-                    mVisibility = View.GONE;
-                }
-            }
-        }
-
-        if (padding >= 0) {
-            leftPadding = padding;
-            topPadding = padding;
-            rightPadding = padding;
-            bottomPadding = padding;
-        }
-
-        internalSetPadding(leftPadding > 0 ? leftPadding : 0, topPadding > 0 ? topPadding : 0,
-                rightPadding > 0 ? rightPadding : 0, bottomPadding > 0 ? bottomPadding : 0);
-    }
-
     protected void onAttachedToHost() {
     }
 
