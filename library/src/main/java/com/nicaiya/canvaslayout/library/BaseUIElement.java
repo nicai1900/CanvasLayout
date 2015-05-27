@@ -10,11 +10,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
-import com.nicaiya.canvaslayout.library.utils.DimensionConverter;
+public class BaseUIElement implements UIElement {
 
-public abstract class AbstractUIElement implements UIElement {
-
-    private static final String TAG = AbstractUIElement.class.getSimpleName();
+    private static final String TAG = BaseUIElement.class.getSimpleName();
     private static final boolean DEG = false;
 
     protected UIElementHost mHost;
@@ -53,11 +51,11 @@ public abstract class AbstractUIElement implements UIElement {
         return result;
     }
 
-    public AbstractUIElement(UIElementHost host) {
+    public BaseUIElement(UIElementHost host) {
         this(host, (AttributeSet) null);
     }
 
-    public AbstractUIElement(UIElementHost host, AttributeSet attrs) {
+    public BaseUIElement(UIElementHost host, AttributeSet attrs) {
         swapHost(host);
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UIElement, 0, 0);
@@ -300,11 +298,19 @@ public abstract class AbstractUIElement implements UIElement {
         mHost.invalidate(mBounds.left, mBounds.top, mBounds.right, mBounds.bottom);
     }
 
-    protected abstract void onDraw(Canvas canvas);
+    protected void onDraw(Canvas canvas) {
 
-    protected abstract void onMeasure(int widthMeasureSpec, int heightMeasureSpec);
+    }
 
-    protected abstract void onLayout(int left, int top, int right, int bottom);
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-    public abstract void drawableStateChanged();
+    }
+
+    protected void onLayout(int left, int top, int right, int bottom) {
+
+    }
+
+    public void drawableStateChanged() {
+
+    }
 }

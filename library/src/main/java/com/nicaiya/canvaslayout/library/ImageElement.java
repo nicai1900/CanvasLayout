@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.widget.ImageView.ScaleType;
 
-public class ImageElement extends AbstractUIElement implements Drawable.Callback {
+public class ImageElement extends BaseUIElement implements Drawable.Callback {
 
     private static final String TAG = ImageElement.class.getSimpleName();
     private static final boolean DEG = false;

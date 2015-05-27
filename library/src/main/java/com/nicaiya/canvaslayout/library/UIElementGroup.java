@@ -2,19 +2,16 @@
 package com.nicaiya.canvaslayout.library;
 
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 
-import com.nicaiya.canvaslayout.library.utils.DimensionConverter;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class UIElementGroup extends AbstractUIElement {
+public abstract class UIElementGroup extends BaseUIElement {
 
     private static final String TAG = UIElementGroup.class.getSimpleName();
     private static final boolean DEG = false;
@@ -49,8 +46,8 @@ public abstract class UIElementGroup extends AbstractUIElement {
 
         if (mElements != null) {
             for (UIElement element : mElements) {
-                if (element instanceof AbstractUIElement) {
-                    ((AbstractUIElement) element).onAttachedToHost();
+                if (element instanceof BaseUIElement) {
+                    ((BaseUIElement) element).onAttachedToHost();
                 }
             }
         }
@@ -61,8 +58,8 @@ public abstract class UIElementGroup extends AbstractUIElement {
         super.onDetachedFromHost();
 
         for (UIElement element : mElements) {
-            if (element instanceof AbstractUIElement) {
-                ((AbstractUIElement) element).onDetachedFromHost();
+            if (element instanceof BaseUIElement) {
+                ((BaseUIElement) element).onDetachedFromHost();
             }
         }
     }
