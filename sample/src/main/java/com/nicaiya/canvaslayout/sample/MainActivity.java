@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.nicaiya.canvaslayout.library.LinearElement;
+import com.nicaiya.canvaslayout.library.TextElement;
 import com.nicaiya.canvaslayout.library.UIElement;
 import com.nicaiya.canvaslayout.library.UIElementInflater;
 import com.nicaiya.canvaslayout.library.UIElementView;
@@ -14,6 +16,8 @@ public class MainActivity extends ActionBarActivity {
     private UIElementView mUIElementView;
     private UIElementInflater mUIElementInflater;
 
+    private TextElement mTestText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,8 +25,10 @@ public class MainActivity extends ActionBarActivity {
 
         mUIElementView = (UIElementView) findViewById(R.id.element_view);
         mUIElementInflater = UIElementInflater.from(this);
-        UIElement content = mUIElementInflater.inflate(R.layout.element_content, mUIElementView, null);
+        LinearElement content = (LinearElement) mUIElementInflater.inflate(R.layout.element_content, mUIElementView, null);
         mUIElementView.setUIElement(content);
+
+        mTestText = (TextElement) content.findElementById(R.id.test_text);
     }
 
     @Override
@@ -41,6 +47,7 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            mTestText.setText("aaaa");
             return true;
         }
 

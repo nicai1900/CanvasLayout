@@ -225,6 +225,7 @@ public class TextElement extends AbstractUIElement {
             mSavedLayout = (BoringLayout) mLayout;
         }
 
+        mLayout = null;
         mBoring = null;
     }
 
@@ -381,13 +382,13 @@ public class TextElement extends AbstractUIElement {
 
             final boolean maxChanged = (mMaxLines != mOldMaxLines);
 
-            if (layoutChanged || maxChanged) {
+            //if (layoutChanged || maxChanged) {
                 if (!maxChanged && widthChanged) {
                     mLayout.increaseWidthTo(unpaddedWidth);
                 } else {
                     makeNewLayout(unpaddedWidth, boring, unpaddedWidth, false);
                 }
-            }
+            //}
         }
 
         if (heightMode == MeasureSpec.EXACTLY) {
