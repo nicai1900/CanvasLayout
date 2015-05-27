@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
@@ -28,6 +29,8 @@ public class BaseUIElement implements UIElement {
     private LayoutParams mLayoutParams;
 
     private int mVisibility = View.VISIBLE;
+
+    private float mAlpha = 1f;
 
     public static int resolveSize(int size, int measureSpec) {
         int result = size;
@@ -84,6 +87,8 @@ public class BaseUIElement implements UIElement {
                 mId = a.getResourceId(attr, -1);
             } else if (attr == R.styleable.UIElement_android_visibility) {
                 mVisibility = a.getInt(attr, View.VISIBLE);
+            } else if (attr == R.styleable.UIElement_android_alpha) {
+                setAlpha(a.getFloat(attr, 1f));
             }
         }
 
@@ -201,6 +206,20 @@ public class BaseUIElement implements UIElement {
         invalidate();
     }
 
+    public float getAlpha() {
+        return mAlpha;
+    }
+
+    public void setAlpha(float alpha) {
+        if (mAlpha == alpha) {
+            return;
+        }
+
+        mAlpha = alpha;
+
+        invalidate();
+    }
+
     @Override
     public final void draw(Canvas canvas) {
         final int saveCount = canvas.getSaveCount();
@@ -208,6 +227,8 @@ public class BaseUIElement implements UIElement {
 
         canvas.clipRect(mBounds);
         canvas.translate(mBounds.left, mBounds.top);
+
+        canvas.saveLayerAlpha(mBounds.left, mBounds.top, mBounds.right, mBounds.bottom, (int) (mAlpha * 255), Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
 
         onDraw(canvas);
 

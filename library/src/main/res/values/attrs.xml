@@ -11,6 +11,7 @@
         <attr name="android:paddingRight" />
         <attr name="android:paddingBottom" />
         <attr name="android:visibility" />
+        <attr name="android:alpha" />
 
     </declare-styleable>
 
