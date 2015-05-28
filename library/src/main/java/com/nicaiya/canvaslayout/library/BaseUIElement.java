@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
@@ -103,6 +102,7 @@ public class BaseUIElement implements UIElement {
                 rightPadding > 0 ? rightPadding : 0, bottomPadding > 0 ? bottomPadding : 0);
 
         a.recycle();
+
     }
 
     protected void onAttachedToHost() {
