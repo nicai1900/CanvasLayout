@@ -55,7 +55,6 @@ Using
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
-
     <com.nicaiya.canvaslayout.library.AbsoluteElement
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
