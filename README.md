@@ -6,10 +6,12 @@ Using
 =====
 
 ```xml
+<?xml version="1.0" encoding="utf-8"?>
+
 <com.nicaiya.canvaslayout.library.LinearElement
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="400dp"
-    android:layout_height="400dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <com.nicaiya.canvaslayout.library.TextElement
@@ -23,6 +25,7 @@ Using
     <com.nicaiya.canvaslayout.library.LinearElement
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <com.nicaiya.canvaslayout.library.ImageElement
@@ -51,13 +54,16 @@ Using
         android:id="@+id/absolute_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="Absolute"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
+
     <com.nicaiya.canvaslayout.library.AbsoluteElement
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
 
         <com.nicaiya.canvaslayout.library.TextElement
             android:layout_width="wrap_content"
@@ -78,6 +84,36 @@ Using
             android:textSize="20sp" />
 
     </com.nicaiya.canvaslayout.library.AbsoluteElement>
+
+    <com.nicaiya.canvaslayout.library.TextElement
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="FrameLayout"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
+
+    <com.nicaiya.canvaslayout.library.FrameElement
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <com.nicaiya.canvaslayout.library.TextElement
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text1"
+            android:textColor="@android:color/black"
+            android:textSize="10sp" />
+
+        <com.nicaiya.canvaslayout.library.TextElement
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="text2"
+            android:textColor="@android:color/black"
+            android:textSize="25sp" />
+
+    </com.nicaiya.canvaslayout.library.FrameElement>
+
 </com.nicaiya.canvaslayout.library.LinearElement>
 ```
 
