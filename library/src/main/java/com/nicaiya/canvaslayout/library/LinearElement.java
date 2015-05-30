@@ -149,9 +149,9 @@ public class LinearElement extends UIElementGroup {
                 Log.d(TAG, "measureVertical totalLength " + mTotalLength);
             }
         }
-        mTotalLength += getPaddingLeft() + getPaddingRight();
-        maxWidth += getPaddingTop() + getPaddingBottom();
-        setMeasuredDimension(resolveSize(maxWidth, heightMeasureSpec), resolveSize(mTotalLength, widthMeasureSpec));
+        mTotalLength += getPaddingTop() + getPaddingBottom();
+        maxWidth += getPaddingLeft() + getPaddingRight();
+        setMeasuredDimension(resolveSize(maxWidth, widthMeasureSpec), resolveSize(mTotalLength, heightMeasureSpec));
     }
 
     @Override
