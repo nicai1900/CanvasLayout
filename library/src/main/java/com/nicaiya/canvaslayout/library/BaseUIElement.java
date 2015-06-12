@@ -222,6 +222,10 @@ public class BaseUIElement implements UIElement {
 
     @Override
     public final void draw(Canvas canvas) {
+        if(mVisibility != View.VISIBLE) {
+            return;
+        }
+
         final int saveCount = canvas.getSaveCount();
         canvas.save();
 
