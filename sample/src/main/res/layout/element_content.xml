@@ -5,8 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    </com.nicaiya.canvaslayout.library.LinearElement>
-
     <com.nicaiya.canvaslayout.library.TextElement
         android:id="@+id/linear_text"
         android:layout_width="wrap_content"
