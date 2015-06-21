@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -15,21 +15,44 @@ public class BaseUIElement implements UIElement {
     private static final String TAG = BaseUIElement.class.getSimpleName();
     private static final boolean DEG = false;
 
+    public static final int NO_ID = -1;
+
+    public static final int VISIBLE = 0x00000000;
+    public static final int INVISIBLE = 0x00000004;
+    public static final int GONE = 0x00000008;
+
     protected UIElementHost mHost;
 
-    private int mId;
+    int mMeasuredWidth;
+    int mMeasuredHeight;
 
-    private int mMeasuredWidth;
-    private int mMeasuredHeight;
+    int mId;
 
-    private Rect mBounds = new Rect();
-    private Rect mPadding = new Rect();
+    protected Object mTag = null;
 
-    private LayoutParams mLayoutParams;
+    protected LayoutParams mLayoutParams;
 
-    private int mVisibility = View.VISIBLE;
+    private int mVisibility = VISIBLE;
 
     private float mAlpha = 1f;
+
+    protected int mLeft;
+
+    protected int mRight;
+
+    protected int mTop;
+
+    protected int mBottom;
+
+    protected int mPaddingLeft;
+
+    protected int mPaddingRight;
+
+    protected int mPaddingTop;
+
+    protected int mPaddingBottom;
+
+    private Drawable mBackground;
 
     public static int resolveSize(int size, int measureSpec) {
         int result = size;
@@ -83,9 +106,9 @@ public class BaseUIElement implements UIElement {
             } else if (attr == R.styleable.UIElement_android_paddingBottom) {
                 bottomPadding = a.getDimensionPixelSize(attr, -1);
             } else if (attr == R.styleable.UIElement_android_id) {
-                mId = a.getResourceId(attr, -1);
+                mId = a.getResourceId(attr, NO_ID);
             } else if (attr == R.styleable.UIElement_android_visibility) {
-                mVisibility = a.getInt(attr, View.VISIBLE);
+                mVisibility = a.getInt(attr, VISIBLE);
             } else if (attr == R.styleable.UIElement_android_alpha) {
                 setAlpha(a.getFloat(attr, 1f));
             }
@@ -157,22 +180,22 @@ public class BaseUIElement implements UIElement {
 
     @Override
     public int getPaddingLeft() {
-        return mPadding.left;
+        return mPaddingLeft;
     }
 
     @Override
     public int getPaddingTop() {
-        return mPadding.top;
+        return mPaddingTop;
     }
 
     @Override
     public int getPaddingRight() {
-        return mPadding.right;
+        return mPaddingRight;
     }
 
     @Override
     public int getPaddingBottom() {
-        return mPadding.bottom;
+        return mPaddingBottom;
     }
 
     @Override
@@ -183,10 +206,28 @@ public class BaseUIElement implements UIElement {
     }
 
     private void internalSetPadding(int left, int top, int right, int bottom) {
-        mPadding.left = left;
-        mPadding.top = top;
-        mPadding.right = right;
-        mPadding.bottom = bottom;
+        boolean changed = false;
+
+        if (mPaddingLeft != left) {
+            changed = true;
+            mPaddingLeft = left;
+        }
+        if (mPaddingTop != top) {
+            changed = true;
+            mPaddingTop = top;
+        }
+        if (mPaddingRight != right) {
+            changed = true;
+            mPaddingRight = right;
+        }
+        if (mPaddingBottom != bottom) {
+            changed = true;
+            mPaddingBottom = bottom;
+        }
+
+        if (changed) {
+            requestLayout();
+        }
     }
 
     @Override
@@ -222,17 +263,17 @@ public class BaseUIElement implements UIElement {
 
     @Override
     public final void draw(Canvas canvas) {
-        if(mVisibility != View.VISIBLE) {
+        if (mVisibility != VISIBLE) {
             return;
         }
 
         final int saveCount = canvas.getSaveCount();
         canvas.save();
 
-        canvas.clipRect(mBounds);
-        canvas.translate(mBounds.left, mBounds.top);
+        canvas.clipRect(mLeft, mTop, mRight, mBottom);
+        canvas.translate(mLeft, mTop);
 
-        canvas.saveLayerAlpha(mBounds.left, mBounds.top, mBounds.right, mBounds.bottom, (int) (mAlpha * 255), Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
+        canvas.saveLayerAlpha(mLeft, mTop, mRight, mBottom, (int) (mAlpha * 255), Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
 
         onDraw(canvas);
 
@@ -246,42 +287,42 @@ public class BaseUIElement implements UIElement {
 
     @Override
     public final void layout(int left, int top, int right, int bottom) {
-        mBounds.left = left;
-        mBounds.top = top;
-        mBounds.right = right;
-        mBounds.bottom = bottom;
+        mLeft = left;
+        mTop = top;
+        mRight = right;
+        mBottom = bottom;
 
         onLayout(left, top, right, bottom);
     }
 
     @Override
     public int getLeft() {
-        return mBounds.left;
+        return mLeft;
     }
 
     @Override
     public int getTop() {
-        return mBounds.top;
+        return mTop;
     }
 
     @Override
     public int getRight() {
-        return mBounds.right;
+        return mRight;
     }
 
     @Override
     public int getBottom() {
-        return mBounds.bottom;
+        return mBottom;
     }
 
     @Override
     public int getWidth() {
-        return mBounds.right - mBounds.left;
+        return mRight - mLeft;
     }
 
     @Override
     public int getHeight() {
-        return mBounds.bottom - mBounds.top;
+        return mBottom - mTop;
     }
 
     @Override
@@ -320,7 +361,15 @@ public class BaseUIElement implements UIElement {
 
     @Override
     public void invalidate() {
-        mHost.invalidate(mBounds.left, mBounds.top, mBounds.right, mBounds.bottom);
+        mHost.invalidate(0, 0, mRight - mLeft, mBottom - mTop);
+    }
+
+    public Object getTag() {
+        return mTag;
+    }
+
+    public void setTag(final Object tag) {
+        mTag = tag;
     }
 
     protected void onDraw(Canvas canvas) {

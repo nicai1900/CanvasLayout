@@ -31,7 +31,7 @@ public class FrameElement extends UIElementGroup {
         measureChildren(widthMeasureSpec, heightMeasureSpec);
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != View.GONE) {
+            if (child.getVisibility() != BaseUIElement.GONE) {
                 FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) child.getLayoutParams();
 
                 maxWidth = Math.max(maxWidth,
@@ -57,7 +57,7 @@ public class FrameElement extends UIElementGroup {
 
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != View.GONE) {
+            if (child.getVisibility() != BaseUIElement.GONE) {
 
                 FrameLayout.LayoutParams lp =
                         (FrameLayout.LayoutParams) child.getLayoutParams();

@@ -101,7 +101,7 @@ public class LinearElement extends UIElementGroup {
         measureChildren(widthMeasureSpec, heightMeasureSpec);
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != View.GONE) {
+            if (child.getVisibility() != BaseUIElement.GONE) {
                 int childRight;
                 int childBottom;
                 childRight = child.getMeasuredWidth();
@@ -132,7 +132,7 @@ public class LinearElement extends UIElementGroup {
         measureChildren(widthMeasureSpec, heightMeasureSpec);
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != View.GONE) {
+            if (child.getVisibility() != BaseUIElement.GONE) {
                 int childRight;
                 int childBottom;
 
@@ -200,7 +200,7 @@ public class LinearElement extends UIElementGroup {
         int count = getElementCount();
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != View.GONE) {
+            if (child.getVisibility() != BaseUIElement.GONE) {
                 LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
 
                 final int childWidth = child.getMeasuredWidth();
@@ -272,7 +272,7 @@ public class LinearElement extends UIElementGroup {
         int count = getElementCount();
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != View.GONE) {
+            if (child.getVisibility() != BaseUIElement.GONE) {
                 LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
                 final int childWidth = child.getMeasuredWidth();
                 final int childHeight = child.getMeasuredHeight();
