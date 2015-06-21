@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -51,8 +50,6 @@ public class BaseUIElement implements UIElement {
     protected int mPaddingTop;
 
     protected int mPaddingBottom;
-
-    private Drawable mBackground;
 
     public static int resolveSize(int size, int measureSpec) {
         int result = size;
