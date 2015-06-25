@@ -1,5 +1,5 @@
 
-package com.nicaiya.canvaslayout.library;
+package com.nicaiya.canvaslayout;
 
 import android.annotation.TargetApi;
 import android.os.Build;

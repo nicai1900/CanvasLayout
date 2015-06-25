@@ -1,4 +1,4 @@
-package com.nicaiya.canvaslayout.library;
+package com.nicaiya.canvaslayout;
 
 import android.content.res.TypedArray;
 import android.util.AttributeSet;

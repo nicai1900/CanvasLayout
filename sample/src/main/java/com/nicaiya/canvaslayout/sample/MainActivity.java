@@ -1,15 +1,14 @@
 package com.nicaiya.canvaslayout.sample;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.nicaiya.canvaslayout.library.LinearElement;
-import com.nicaiya.canvaslayout.library.TextElement;
-import com.nicaiya.canvaslayout.library.UIElement;
-import com.nicaiya.canvaslayout.library.UIElementInflater;
-import com.nicaiya.canvaslayout.library.UIElementView;
+import com.nicaiya.canvaslayout.LinearElement;
+import com.nicaiya.canvaslayout.TextElement;
+import com.nicaiya.canvaslayout.UIElementInflater;
+import com.nicaiya.canvaslayout.UIElementView;
 
 public class MainActivity extends ActionBarActivity {
 

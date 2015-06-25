@@ -1,5 +1,5 @@
 
-package com.nicaiya.canvaslayout.library;
+package com.nicaiya.canvaslayout;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;

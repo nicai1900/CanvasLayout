@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.nicaiya.canvaslayout.library.LinearElement xmlns:android="http://schemas.android.com/apk/res/android"
+<com.nicaiya.canvaslayout.LinearElement xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.nicaiya.canvaslayout.library.TextElement
+    <com.nicaiya.canvaslayout.TextElement
         android:id="@+id/linear_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,35 +13,35 @@
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
-    <com.nicaiya.canvaslayout.library.LinearElement
+    <com.nicaiya.canvaslayout.LinearElement
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
-        <com.nicaiya.canvaslayout.library.ImageElement
+        <com.nicaiya.canvaslayout.ImageElement
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitStart"
             android:src="@mipmap/tweet_retweet" />
 
-        <com.nicaiya.canvaslayout.library.ImageElement
+        <com.nicaiya.canvaslayout.ImageElement
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:scaleType="fitStart"
             android:src="@mipmap/tweet_favourite" />
 
-        <com.nicaiya.canvaslayout.library.ImageElement
+        <com.nicaiya.canvaslayout.ImageElement
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:scaleType="fitStart"
             android:src="@mipmap/tweet_reply" />
 
-    </com.nicaiya.canvaslayout.library.LinearElement>
+    </com.nicaiya.canvaslayout.LinearElement>
 
-    <com.nicaiya.canvaslayout.library.TextElement
+    <com.nicaiya.canvaslayout.TextElement
         android:id="@+id/absolute_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,12 +51,12 @@
         android:textSize="20sp" />
 
 
-    <com.nicaiya.canvaslayout.library.AbsoluteElement
+    <com.nicaiya.canvaslayout.AbsoluteElement
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp">
 
-        <com.nicaiya.canvaslayout.library.TextElement
+        <com.nicaiya.canvaslayout.TextElement
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_x="25dp"
@@ -65,7 +65,7 @@
             android:textColor="@android:color/black"
             android:textSize="25sp" />
 
-        <com.nicaiya.canvaslayout.library.TextElement
+        <com.nicaiya.canvaslayout.TextElement
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_x="10dp"
@@ -74,9 +74,9 @@
             android:textColor="@android:color/black"
             android:textSize="20sp" />
 
-    </com.nicaiya.canvaslayout.library.AbsoluteElement>
+    </com.nicaiya.canvaslayout.AbsoluteElement>
 
-    <com.nicaiya.canvaslayout.library.TextElement
+    <com.nicaiya.canvaslayout.TextElement
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -84,28 +84,28 @@
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
-    <com.nicaiya.canvaslayout.library.FrameElement
+    <com.nicaiya.canvaslayout.FrameElement
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp">
 
-        <com.nicaiya.canvaslayout.library.TextElement
+        <com.nicaiya.canvaslayout.TextElement
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="text1"
             android:textColor="@android:color/black"
             android:textSize="10sp" />
 
-        <com.nicaiya.canvaslayout.library.TextElement
+        <com.nicaiya.canvaslayout.TextElement
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="text2"
             android:textColor="@android:color/black"
             android:textSize="25sp" />
 
-    </com.nicaiya.canvaslayout.library.FrameElement>
+    </com.nicaiya.canvaslayout.FrameElement>
 
 
-</com.nicaiya.canvaslayout.library.LinearElement>
+</com.nicaiya.canvaslayout.LinearElement>
 
 
