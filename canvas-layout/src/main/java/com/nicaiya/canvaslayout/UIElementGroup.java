@@ -11,7 +11,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class UIElementGroup extends BaseUIElement {
+public abstract class UIElementGroup extends AbstractUIElement {
 
     private static final String TAG = UIElementGroup.class.getSimpleName();
     private static final boolean DEG = false;
@@ -46,8 +46,8 @@ public abstract class UIElementGroup extends BaseUIElement {
 
         if (mElements != null) {
             for (UIElement element : mElements) {
-                if (element instanceof BaseUIElement) {
-                    ((BaseUIElement) element).onAttachedToHost();
+                if (element instanceof AbstractUIElement) {
+                    ((AbstractUIElement) element).onAttachedToHost();
                 }
             }
         }
@@ -58,8 +58,8 @@ public abstract class UIElementGroup extends BaseUIElement {
         super.onDetachedFromHost();
 
         for (UIElement element : mElements) {
-            if (element instanceof BaseUIElement) {
-                ((BaseUIElement) element).onDetachedFromHost();
+            if (element instanceof AbstractUIElement) {
+                ((AbstractUIElement) element).onDetachedFromHost();
             }
         }
     }

@@ -2,7 +2,6 @@ package com.nicaiya.canvaslayout;
 
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -31,7 +30,7 @@ public class FrameElement extends UIElementGroup {
         measureChildren(widthMeasureSpec, heightMeasureSpec);
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != BaseUIElement.GONE) {
+            if (child.getVisibility() != AbstractUIElement.GONE) {
                 FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) child.getLayoutParams();
 
                 maxWidth = Math.max(maxWidth,
@@ -57,7 +56,7 @@ public class FrameElement extends UIElementGroup {
 
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != BaseUIElement.GONE) {
+            if (child.getVisibility() != AbstractUIElement.GONE) {
 
                 FrameLayout.LayoutParams lp =
                         (FrameLayout.LayoutParams) child.getLayoutParams();

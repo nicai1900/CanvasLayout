@@ -5,13 +5,14 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
-public class BaseUIElement implements UIElement {
+public abstract class AbstractUIElement implements UIElement {
 
-    private static final String TAG = BaseUIElement.class.getSimpleName();
+    private static final String TAG = AbstractUIElement.class.getSimpleName();
     private static final boolean DEG = false;
 
     public static final int NO_ID = -1;
@@ -22,8 +23,8 @@ public class BaseUIElement implements UIElement {
 
     protected UIElementHost mHost;
 
-    int mMeasuredWidth;
-    int mMeasuredHeight;
+    private int mMeasuredWidth;
+    private int mMeasuredHeight;
 
     int mId;
 
@@ -73,11 +74,11 @@ public class BaseUIElement implements UIElement {
         return result;
     }
 
-    public BaseUIElement(UIElementHost host) {
+    public AbstractUIElement(UIElementHost host) {
         this(host, (AttributeSet) null);
     }
 
-    public BaseUIElement(UIElementHost host, AttributeSet attrs) {
+    public AbstractUIElement(UIElementHost host, AttributeSet attrs) {
         swapHost(host);
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UIElement, 0, 0);
@@ -274,6 +275,13 @@ public class BaseUIElement implements UIElement {
 
         onDraw(canvas);
 
+        if (DEG) {
+            canvas.restoreToCount(saveCount);
+            Drawable drawable = getResources().getDrawable(R.drawable.uielement_debug_stroke);
+            drawable.setBounds(mLeft, mTop, mRight, mBottom);
+            drawable.draw(canvas);
+        }
+
         canvas.restoreToCount(saveCount);
     }
 
@@ -369,19 +377,11 @@ public class BaseUIElement implements UIElement {
         mTag = tag;
     }
 
-    protected void onDraw(Canvas canvas) {
+    protected abstract void onDraw(Canvas canvas);
 
-    }
+    protected abstract void onMeasure(int widthMeasureSpec, int heightMeasureSpec);
 
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    protected abstract void onLayout(int left, int top, int right, int bottom);
 
-    }
-
-    protected void onLayout(int left, int top, int right, int bottom) {
-
-    }
-
-    public void drawableStateChanged() {
-
-    }
+    public abstract void drawableStateChanged();
 }

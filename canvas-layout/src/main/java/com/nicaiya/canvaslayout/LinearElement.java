@@ -4,7 +4,6 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -101,7 +100,7 @@ public class LinearElement extends UIElementGroup {
         measureChildren(widthMeasureSpec, heightMeasureSpec);
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != BaseUIElement.GONE) {
+            if (child.getVisibility() != AbstractUIElement.GONE) {
                 int childRight;
                 int childBottom;
                 childRight = child.getMeasuredWidth();
@@ -132,7 +131,7 @@ public class LinearElement extends UIElementGroup {
         measureChildren(widthMeasureSpec, heightMeasureSpec);
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != BaseUIElement.GONE) {
+            if (child.getVisibility() != AbstractUIElement.GONE) {
                 int childRight;
                 int childBottom;
 
@@ -200,7 +199,7 @@ public class LinearElement extends UIElementGroup {
         int count = getElementCount();
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != BaseUIElement.GONE) {
+            if (child.getVisibility() != AbstractUIElement.GONE) {
                 LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
 
                 final int childWidth = child.getMeasuredWidth();
@@ -272,7 +271,7 @@ public class LinearElement extends UIElementGroup {
         int count = getElementCount();
         for (int i = 0; i < count; i++) {
             UIElement child = getElementAt(i);
-            if (child.getVisibility() != BaseUIElement.GONE) {
+            if (child.getVisibility() != AbstractUIElement.GONE) {
                 LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
                 final int childWidth = child.getMeasuredWidth();
                 final int childHeight = child.getMeasuredHeight();

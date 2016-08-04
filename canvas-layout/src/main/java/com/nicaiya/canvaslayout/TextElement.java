@@ -20,7 +20,7 @@ import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
-public class TextElement extends BaseUIElement {
+public class TextElement extends AbstractUIElement {
 
     private static final String TAG = TextElement.class.getSimpleName();
     private static final boolean DEG = false;
